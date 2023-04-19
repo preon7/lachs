@@ -1,0 +1,243 @@
+@import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
+/* main display panel */
+.display_div {
+   color: white;
+   /* border-bottom: thin red solid; */
+   padding: 3px 0;
+   /* display: flex; */
+   display: inline-block;
+   align-items: center;
+   text-shadow: 2px 2px 2px black;
+}
+
+.display_container {
+  width: 100%;
+}
+
+.display_div .icon_div {
+  display: inline;
+  margin-left: 15px;
+}
+
+.display_div .icon_div span i {
+  font-size: 24px;
+}
+
+.display_div .text_div {
+  display: inline;
+  margin-left: 15px;
+}
+
+.display_div .text_div span {
+  color: white;
+  font-size: 24px;
+}
+
+.display_div .text_div span+span {
+  color: white;
+  font-size: 11px;
+}
+
+.level {
+  color: white;
+  font-weight: bold;
+  display: inline;
+  margin-left: 10px;
+  font-size: 28px;
+  text-shadow: 2px 2px 2px black;
+}
+
+h2 {
+  font-family: "Fjalla One";
+  text-align: center;
+}
+
+/* setting panel on start */
+.enemy_block {
+  font-family: "Fjalla One";
+  display: inline-block;
+}
+
+.enemy_icon {
+  margin-left: 4px;
+  margin-right: -4px;
+}
+
+.setting_form {
+  font-family: "Fjalla One";
+  width: 300;
+  background: #E66849;
+  padding: 30px 10px;
+  border: 10px solid black;
+  border-radius: 20px;
+  box-shadow: 15px 15px 1px #D84D2E, 15px 15px 1px 2px black;
+}
+
+.setting_form .target_check {
+  display: none;
+}
+
+.setting_form input.target_input {
+  text-align: center;
+}
+
+.setting_form input.target_input, input.date_input {
+  display: block;
+  /* width: 10; */
+  font-size: 14pt;
+  line-height: 28pt;
+  font-family: "Fjalla One";
+  margin-bottom: 28pt;
+  border: none;
+  border-bottom: 5px solid black;
+  background: #E66849;
+  min-width: 50px;
+  padding-left: 5px;
+  outline: none;
+  color: black;
+}
+
+.setting_form input:focus {
+  border-bottom: 5px solid #ffa580;
+}
+
+.setting_form button {
+  display: block;
+  margin: 0 auto;
+  line-height: 28pt;
+  padding: 0 20px;
+  background: #D84D2E;
+  letter-spacing: 2px;
+  transition: 0.2s all ease-in-out;
+  outline: none;
+  border: 2px solid black;
+  border-radius: 10px;
+  /* box-shadow: 3px 3px 1px 1px #D84D2E, 3px 3px 1px 2px black; */
+}
+.setting_form button:hover {
+  background: #ffa580;
+  color: black;
+  border: 2px solid black;
+}
+
+::selection {
+  background: #ffc8ff;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  border-bottom: 5px solid #95a4ff;
+  -webkit-text-fill-color: #2A293E;
+  -webkit-box-shadow: 0 0 0px 1000px #f8f4e5 inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #ffa580;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #ffa580;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* checkbox */
+input.enemy_check {
+  position: absolute;
+  opacity: 0;
+}
+input.enemy_check:checked + label svg path {
+  stroke-dashoffset: 0;
+}
+/* input.enemy_check:focus + label {
+  transform: scale(1.03);
+} */
+
+.enemy_check + label {
+  display: block;
+  margin-top: 16px;
+  margin-left: 10.5px;
+  margin-right: 14px;
+  margin-bottom: 30pt;
+  border: 3px solid #333;
+  width: var(--d);
+  height: var(--d);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.enemy_check + label:active {
+  transform: scale(1.05);
+  border-radius: 9px;
+}
+.enemy_check + label svg {
+  pointer-events: none;
+}
+.enemy_check + label svg path {
+  fill: none;
+  stroke: #333;
+  stroke-width: 4px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 101;
+  transition: all 350ms cubic-bezier(1, 0, 0.37, 0.91);
+}
+
+
+.setting_form input.hidden {
+  display: none;
+}
+.setting_form input.display {
+  display: block;
+}
+
+.setting_form .display {
+  display: block;
+}

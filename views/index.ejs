@@ -1,0 +1,110 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <!-- set count number -->
+        <% if (!refresh) { %>
+        <div class="setting_form">
+            <h2> Target Setting </h2>
+            <form action="/" method="post">
+                <div class="enemy_block">
+                    <!-- time setting -->
+                    <label for="startTime">
+                        Count Start From:
+                    </label><br>
+                    <input class="date_input" type="datetime-local" id="startTime" name="startTime" value="<%= defaultDate %>">
+                </div>
+                <div class="enemy_block" style="position: absolute; margin-left: 15;">
+                    <!-- target switch -->
+                    <label for="toggleswitch" id="status" >
+                        Count Only
+                    </label>
+                    <br>
+                    <br>
+                    <label class="switch">
+                        <input name="only_count" type="checkbox" id="toggleswitch">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <br>
+                <% setArr.forEach(element => { %>
+                <div class="enemy_block">
+                    <label for=<%= element.eid %>>
+                        <span class="enemy_icon"><img src=<%= element.url %> width="40" height="40"></span>
+                    </label>
+                    <input class="target_input" type="text" size="4" id=<%= element.eid %> placeholder="0" name=<%= element.name %> value="<%= element.default %>" >
+                    <!-- <input class="target_check" type="checkbox" name=<%= element.eid + "check" %>> -->
+                    <div class="target_check">
+                        <input class="enemy_check" id=<%= element.eid + "check" %> type="checkbox" name=<%= element.eid + "check" %> <%= element.default_check %> />
+                        <label class="enemy_check" for=<%= element.eid + "check" %> style="--d: 20px">
+                            <svg viewBox="0,0,50,50">
+                            <path d="M5 30 L 20 45 L 45 5"></path>
+                            </svg>
+                        </label>
+                    </div>
+                </div>
+                <% }) %>
+                <button type="submit" name="submit">
+                    Start
+                </button>
+            </form>
+            
+        </div>
+        <% } %>
+
+        <!-- display current danger level -->
+        <% if (refresh) { %>
+        <div class="level">
+            <!-- <span> grade -  level % </span> -->
+        </div>
+        <% } %>
+        
+        <!-- display current count -->
+        <div class="display_container"></div>
+        <% dataArr.forEach(element => { %>
+        <div class="display_div">
+            <div class="icon_div">
+                <span><img src=<%= element.url %> width="40" height="40"></span>    
+            </div>
+            <div class="text_div">
+                <!-- <span><%= element.title %>: </span><br> -->
+                <span><%= element.content %></span>
+            </div>
+        </div>
+        <% }) %>
+        </div>
+
+        <% if (refresh) { %>
+        <script>
+            setInterval(function A() { 
+                location.reload();
+                }, 5 * 1000); 
+        </script>
+        <% } %>
+
+        <!-- switch script -->
+        <script>
+            var input = document.getElementById('toggleswitch');
+            var text_inputs = document.getElementsByClassName("target_input");
+            var check_inputs = document.getElementsByClassName("target_check");
+            var text = document.getElementById('status');
+        
+            input.addEventListener('change',function(){
+                if(this.checked) {
+                    for(var i =0, il = text_inputs.length;i<il;i++){
+                        text_inputs[i].className += " hidden";
+                        check_inputs[i].className += " display";
+                    }
+                    // text.innerHTML = text_inputs[0].className;
+                } else {
+                    for(var i =0, il = text_inputs.length;i<il;i++){
+                        text_inputs[i].className = "target_input";
+                        check_inputs[i].className = "target_check";
+                    }
+                    // text.innerHTML = text_inputs[0].className;
+                }
+            });
+        </script>   
+    </body>
+</html>
