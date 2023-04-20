@@ -106,7 +106,8 @@ h2 {
   margin: 0 auto;
   line-height: 28pt;
   padding: 0 20px;
-  background: #D84D2E;
+  background: black; /* #D84D2E; */
+  color: white;
   letter-spacing: 2px;
   transition: 0.2s all ease-in-out;
   outline: none;
