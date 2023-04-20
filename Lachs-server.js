@@ -5,6 +5,7 @@ var file_content;
 var targets;
 var targetDate;
 var defaultDate;
+var lastDate;
 var currentDangerLevel;
 var currentGrade;
 
@@ -25,6 +26,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }))
 
+const logger = require("./logger");
 
 function fetchResult(startDate) {
     var files = fs.readdirSync('saved_results/');
@@ -57,7 +59,7 @@ function fetchResult(startDate) {
         // check if file already read
         if ((!data.hasOwnProperty(data_key)) && (Date.parse(startDate) < workTime)) {
             data[data_key] = true;
-            console.log("start: " + startDate + ", current: " + file_content.result.playedTime);
+            logger.debug("Start time: " + startDate + "; Got result at: " + file_content.result.playedTime);
 
             // currentDangerLevel = Number(file_content.result.dangerRate) * 100;
             // currentGrade = file_content.result.afterGrade.name + " " + file_content.result.afterGradePoint;
@@ -83,17 +85,13 @@ function subtractHours(date, hours) {
 }
 
 function loadTargets() {
-    try {
-        if (fs.existsSync('resources/targets.json')) {
-            file_content = fs.readFileSync('resources/targets.json');
-            targets = JSON.parse(file_content);
-            targetDate = targets['date'];
-            // console.log("read targets from file ");
-        } else {
-            targets = {};
-        }
-      } catch(err) {
-        console.error(err)
+    if (fs.existsSync('resources/targets.json')) {
+        file_content = fs.readFileSync('resources/targets.json');
+        targets = JSON.parse(file_content);
+        targetDate = targets['date'];
+        // logger.debug("read targets from file ");
+    } else {
+        targets = {};
     }
 }
 
@@ -125,6 +123,8 @@ app.get("/", (req, res) => {
     } else {
         defaultDate = "2023-04-11T00:00";
     }
+
+    lastDate = defaultDate;
     
     res.render("index", {
         defaultDate: defaultDate,
@@ -135,18 +135,24 @@ app.get("/", (req, res) => {
         refresh: false
     })
 })
-  
+    
 app.post("/", (req, res) => {
     var enemyCounts = req.body;
     targetDate = req.body.startTime;
     targets = enemyCounts;
     targets['date'] = targetDate;
+    // reset count after new request
+    if (!(lastDate == targetDate)) {
+        logger.debug('count date changed from ' + lastDate + ' to ' + targetDate);
+        data = {};
+        total_count = {};
+    }
 
     // convert to GMT
     var isoTime = new Date(targetDate).toISOString().slice(0,16);
     fetchResult(isoTime);
-    console.log("target date " + targetDate);
-    console.log("iso date " + isoTime);
+    // logger.debug("target date " + targetDate);
+    // logger.debug("iso date " + isoTime);
 
     var dataArr = [];
     var setArr = [];
@@ -154,7 +160,7 @@ app.post("/", (req, res) => {
     // display form info
     for (var k in enemyCounts) {
         if (k == "startTime") {continue;}
-        // console.log(k.slice(-5));
+        // logger.debug(k.slice(-5));
         // if (k.slice(-5) == 'check') { continue; }
 
         // targets[k] = enemyCounts[k];
@@ -169,7 +175,7 @@ app.post("/", (req, res) => {
         }
         
         if (enemyList.hasOwnProperty(k)) {
-            // console.log(enemyCounts[k]);
+            // logger.debug(enemyCounts[k]);
             dataArr.push({
                 eid: k,
                 content: contentString,
@@ -181,9 +187,11 @@ app.post("/", (req, res) => {
     // save form input this time
     fs.writeFile("resources/targets.json", JSON.stringify(targets), function(err) {
         if (err) {
-            console.log(err);
+            logger.error(err.stack);
         }
     });
+
+    lastDate = targetDate;
 
     res.render("index", {
         defaultDate: defaultDate,
@@ -196,6 +204,12 @@ app.post("/", (req, res) => {
 })
   
 app.listen(8001, (req, res) => {
-  console.log(`Display server is running on localhost:8001, copy this address to OBS.\n
-启动后台显示服务器，复制地址 localhost:8001 到OBS`)
+    logger.info('Display server is running on localhost:8001, copy this address to OBS.');
+    logger.info('启动后台显示服务器，复制地址 localhost:8001 到OBS');
+})
+
+// error handler
+app.use(function (err, req, res, next) {
+    logger.error(err.stack);
+    res.status(500).send('Got an error. Check console output or contact author with log file at ' + 'resources/latest_run.log');
 })
