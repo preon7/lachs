@@ -34,9 +34,9 @@
                     <label for=<%= element.eid %>>
                         <span class="enemy_icon"><img src=<%= element.url %> width="40" height="40"></span>
                     </label>
-                    <input class="target_input" type="text" size="4" id=<%= element.eid %> placeholder="0" name=<%= element.name %> value="<%= element.default %>" >
+                    <input class="target_input hidden" type="text" size="4" id=<%= element.eid %> placeholder="0" name=<%= element.name %> value="<%= element.default %>" >
                     <!-- <input class="target_check" type="checkbox" name=<%= element.eid + "check" %>> -->
-                    <div class="target_check">
+                    <div class="target_check display">
                         <input class="enemy_check" id=<%= element.eid + "check" %> type="checkbox" name=<%= element.eid + "check" %> <%= element.default_check %> />
                         <label class="enemy_check" for=<%= element.eid + "check" %> style="--d: 20px">
                             <svg viewBox="0,0,50,50">
