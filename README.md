@@ -1,4 +1,4 @@
-Lachs - Live Assistant for Counting Head in Splatoon3
+Lachs - Live Assistant for Counting Heads in Splatoon3
 ===
 
 Local web server for displaying and updating salmonid boss count in Salmon Run of Splatoon 3.
@@ -44,12 +44,12 @@ to control the number of icons on each line.
 - Windows:
     双击运行install.bat安装并根据引导完成nxapi授权 授权成功后会显示用户信息 此步骤每个Switch用户只需执行一次
 
-    双击launch-Lachs-v.07.bat运行网页服务器
+    双击launch-Lachs-v0.7.bat运行网页服务器
 
 - MacOS / Linux:
     运行install.sh安装并根据引导完成nxapi授权 授权成功后会显示用户信息 此步骤每个Switch用户只需执行一次
 
-    双击launch-Lachs-v.07.sh运行网页服务器
+    双击launch-Lachs-v0.7.sh运行网页服务器
 
 > nxapi授权方式：
 > 1. 网页登陆 my.nintendo.com 后打开命令窗口中显示的链接
