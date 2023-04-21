@@ -1,6 +1,13 @@
 Lachs - Live Assistant for Counting Heads in Splatoon3
 ===
+## Important notice / 重要通知❗
+### 2023.04.21
+    - A bug in nxapi uses an outdated app version causing authorization to fail. Execute tools/patch_nxapi to patch the local file until nxapi is updated.
 
+      数据获取程序nxapi现版本的bug导致无法进行用户授权 请使用tools文件夹里的patch_nxapi进行本地修复，并等待nxapi更新
+
+
+## Introduction / 简介
 Local web server for displaying and updating salmonid boss count in Salmon Run of Splatoon 3.
 
 The live counting can be checked with a browser or [OBS](https://obsproject.com/) (browser source).
@@ -15,7 +22,9 @@ Use Node.js as the local backend and [nxapi](https://github.com/samuelthomas2774
 
 ## Usage / 使用方法
 First, install Node.js (installer can be found on [official website](https://nodejs.org/en))
+We recommend using the default install location.
 
+In Lachs folder:
 - Windows:
     Run install.bat by double-clicking and following the instructions to authorize nxapi.
     If successful, the user info will show on the command window.
@@ -40,6 +49,9 @@ The counting icons are arranged with auto line-break. Adjust the display width o
 to control the number of icons on each line.
 
 首先安装Node.js 安装包可从[官网](https://nodejs.org/en)获取
+建议使用默认安装路径
+
+在Lachs文件夹中：
 
 - Windows:
     双击运行install.bat安装并根据引导完成nxapi授权 授权成功后会显示用户信息 此步骤每个Switch用户只需执行一次
@@ -65,6 +77,17 @@ to control the number of icons on each line.
 计数面板的boss图标采用自动换行显示 设置OBS浏览器宽度可控制每行显示数量
 
 ![manual image](./img/manual.png)
+
+## FAQ / 常见问题
+1. 授权时无法连接服务器：connect ETIMEDOUT
+    - 授权可能需要翻墙（与登陆NSO相同）
+2. 运行实时更新程序时网页出现错误
+    - 可在github发布issue或者加QQ群653996475寻求帮助 必要时提供log/latest_run.log运行日志
+
+## Updates / 版本更新
+
+- 0.7
+    - Initial commit. Boss counting function.
 
 ## License
 GPL-3.0
