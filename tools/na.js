@@ -5,6 +5,7 @@ import { timeoutSignal } from '../util/misc.js';
 const debug = createDebug('nxapi:api:na');
 export async function getNintendoAccountSessionToken(code, verifier, client_id) {
     debug('Getting Nintendo Account session token');
+    console.log("using patched auth");
     const [signal, cancel] = timeoutSignal();
     const response = await fetch('https://accounts.nintendo.com/connect/1.0.0/api/session_token', {
         method: 'POST',
