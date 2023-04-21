@@ -2,9 +2,9 @@ Lachs - Live Assistant for Counting Heads in Splatoon3
 ===
 ## Important notice / 重要通知❗
 ### 2023.04.21
-    - A bug in nxapi uses an outdated app version causing authorization to fail. Execute tools/patch_nxapi to patch the local file until nxapi is updated.
+- A bug in nxapi uses an outdated app version causing authorization to fail. Execute tools/patch_nxapi to patch the local file until nxapi is updated.
 
-      数据获取程序nxapi现版本的bug导致无法进行用户授权 请使用tools文件夹里的patch_nxapi进行本地修复，并等待nxapi更新
+    数据获取程序nxapi现版本的bug导致无法进行用户授权 请使用tools文件夹里的patch_nxapi进行本地修复，并等待nxapi更新
 
 
 ## Introduction / 简介
