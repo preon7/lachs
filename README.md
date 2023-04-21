@@ -43,6 +43,8 @@ After starting the monitor script, nxapi will download the recent 50 Salmon Run 
 Copy http://localhost:8001 to the browser or OBS browser source. 
 Then set salmonid boss to monitor on the setting panel and click the start button to display counting.
 
+❗**OBS webpage and browser webpage are independent. Start counting in the browser will not affect the display in OBS.**
+
 When using OBS, right-click the added browser source and choose the interact button. 
 
 The counting icons are arranged with auto line-break. Adjust the display width of the OBS browser source 
@@ -71,6 +73,8 @@ to control the number of icons on each line.
 > 2. 右键“选择此人”按钮并复制链接地址，粘贴到命令窗口后按回车键
 
 网页服务器启动后，nxapi将下载最近50场打工记录。复制 http://localhost:8001 到浏览器或者OBS中的浏览器源启动实时击杀统计
+
+❗**OBS与浏览器界面相互独立，在浏览器中点击开始不会影响OBS中的显示**
 
 使用OBS浏览器源时可以通过：右键-交互 进行目标设置
 
