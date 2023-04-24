@@ -22,26 +22,25 @@ Use Node.js as the local backend and [nxapi](https://github.com/samuelthomas2774
 可在[OBS](https://obsproject.com/)中添加浏览器源实现直播间统计数据显示
 
 ## Usage / 使用方法
-First, install Node.js (installer can be found on [official website](https://nodejs.org/en))
-We recommend using the default install location.
+1. Install Node.js (installer can be found on [official website](https://nodejs.org/en).
+We recommend using the default install location.)
+2. In Lachs folder:
 
-In Lachs folder:
-- Windows:
-    Run install.bat by double-clicking and following the instructions to authorize nxapi.
-    If successful, the user info will show on the command window.
-    This step only needs to be executed once for each user.
-    
-    To start monitoring killing counts, double-click launch-Lachs-v.07.bat.
+    a. Windows: run ”install.**bat**”，
 
-- MacOS / Linux:
-    Run install.sh, and follow the instructions to authorize nxapi.
-    If successful, the user info will show on the command window.
+    b. MacOS/Linux: run ”install.**sh**”
+
+    c. Following the instructions to authorize nxapi. If successful, the user info will show on the command window.
     This step only needs to be executed once for each user.
 
-    To start monitoring killing counts, double click launch-Lachs-v.07.sh
+3. 启动网页服务器：
 
-After starting the monitor script, nxapi will download the recent 50 Salmon Run results.
-Copy http://localhost:8001 to the browser or OBS browser source. 
+    a. WINDOWS运行”Launch-Lachs-v0.7.**bat**”
+
+    b. MacOS/Linux运行”Launch-Lachs-v0.7.**sh**”
+
+4. After starting the monitor script, nxapi will download the recent 50 Salmon Run results.
+5. Copy http://localhost:8001 to the browser or OBS browser source. 
 Then set salmonid boss to monitor on the setting panel and click the start button to display counting.
 
 ❗**OBS webpage and browser webpage are independent. Start counting in the browser will not affect the display in OBS.**
@@ -51,31 +50,31 @@ When using OBS, right-click the added browser source and choose the interact but
 The counting icons are arranged with auto line-break. Adjust the display width of the OBS browser source 
 to control the number of icons on each line.
 
-首先安装Node.js 安装包可从[官网](https://nodejs.org/en)获取
-建议使用默认安装路径
+1. 安装Node.js（安装包可从[官网](https://nodejs.org/en)获取
+建议使用默认安装路径）
+2. 在GitHub下载，并解压后的Lachs文件夹中:
 
-在Lachs文件夹中：
+    a. WINDOWS运行”install.**bat**”，
 
-- Windows:
-    双击运行install.bat安装并根据引导完成nxapi授权 授权成功后会显示用户信息 此步骤每个Switch用户只需执行一次
+    b. MacOS/Linux运行”install.**sh**”
 
-    双击launch-Lachs-v0.7.bat运行网页服务器
+    c. 安装并根据引导完成nxapi授权 授权成功后会显示用户信息 此步骤每个Switch用户只需执行一次
 
-- MacOS / Linux:
-    运行install.sh安装并根据引导完成nxapi授权 授权成功后会显示用户信息 此步骤每个Switch用户只需执行一次
+    ![auth image](./img/auth.png)
+    **注意一定要复制窗口中显示的新链接到浏览器 不要刷新已经打开的网页，不要用上一次复制的链接**
 
-    双击launch-Lachs-v0.7.sh运行网页服务器
+    d. Napxi授权：网页登陆 my.nintendo.com 后打开命令窗口中显示的链接
 
-> nxapi授权方式：
-> 1. 网页登陆 my.nintendo.com 后打开命令窗口中显示的链接
-> 
-> 链接开头：https://accounts.nintendo.com/connect/1.0.0/...
-> 
-> 2. 右键“选择此人”按钮并复制链接地址，粘贴到命令窗口后按回车键
-> 
-> **注意一定要复制窗口中显示的新链接到浏览器 不要刷新已经打开的网页，不要用上一次复制的链接**
+3. 启动网页服务器：
 
-网页服务器启动后，nxapi将下载最近50场打工记录。复制 http://localhost:8001 到浏览器或者OBS中的浏览器源启动实时击杀统计
+    a. WINDOWS运行”Launch-Lachs-v0.7.**bat**”
+
+    b. MacOS/Linux运行”Launch-Lachs-v0.7.**sh**”
+4. 右键“选择此人”按钮并复制链接地址，粘贴到命令窗口后按回车键
+5. 网页服务器启动后，nxapi将下载最近50场打工记录。
+6. 复制 [http://localhost:8001](http://localhost:8001/) 到浏览器或者OBS中的浏览器源启动实时击杀统计
+     
+
 
 ❗**OBS与浏览器界面相互独立，在浏览器中点击开始不会影响OBS中的显示**
 
