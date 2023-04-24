@@ -33,7 +33,7 @@ We recommend using the default install location.)
     c. Following the instructions to authorize nxapi. If successful, the user info will show on the command window.
     This step only needs to be executed once for each user.
 
-3. 启动网页服务器：
+3. Launch web server:
 
     a. WINDOWS运行”Launch-Lachs-v0.7.**bat**”
 
