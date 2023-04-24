@@ -2,9 +2,10 @@ Lachs - Live Assistant for Counting Heads in Splatoon3
 ===
 ## Important notice / 重要通知❗
 ### 2023.04.21
-- A bug in nxapi uses an outdated app version causing authorization to fail. Execute tools/patch_nxapi to patch the local file until nxapi is updated.
+- A bug in nxapi uses an outdated app version causing authorization to fail. ~~Execute tools/patch_nxapi to patch the local file until nxapi is updated.~~ The patch file will be copied when running the installation script.
 
-    数据获取程序nxapi现版本的bug导致无法进行用户授权 请使用tools文件夹里的patch_nxapi进行本地修复，并等待nxapi更新
+    数据获取程序nxapi现版本的bug导致无法进行用户授权 ~~请使用tools文件夹里的patch_nxapi进行本地修复，并等待nxapi更新~~ 补丁文件会在运行install.bat时自动替换
+
 
 
 ## Introduction / 简介
@@ -68,9 +69,11 @@ to control the number of icons on each line.
 > nxapi授权方式：
 > 1. 网页登陆 my.nintendo.com 后打开命令窗口中显示的链接
 > 
-> 例：https://accounts.nintendo.com/connect/1.0.0/authorize?state=99otT-Y3IeFLeEhCmnInAA8FMlSz-E2QxlsIdCsPSlYJ5pM9&redirect_uri=npf71b963c1b7b6d119%3A%2F%2Fauth&client_id=71b963c1b7b6d119&scope=openid+user+user.birthday+user.mii+user.screenName&response_type=session_token_code&session_token_code_challenge=AnSIhyxe3bqHU3XONV5-FgKuEaiwYIYvKRUhqQ6pub0&session_token_code_challenge_method=S256&theme=login_form
+> 链接开头：https://accounts.nintendo.com/connect/1.0.0/...
 > 
 > 2. 右键“选择此人”按钮并复制链接地址，粘贴到命令窗口后按回车键
+> 
+> **注意一定要复制窗口中显示的新链接到浏览器 不要刷新已经打开的网页，不要用上一次复制的链接**
 
 网页服务器启动后，nxapi将下载最近50场打工记录。复制 http://localhost:8001 到浏览器或者OBS中的浏览器源启动实时击杀统计
 
