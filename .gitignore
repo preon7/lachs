@@ -1,2 +1,5 @@
 .DS_Store
 resources/targets.json
+saved_results
+node_modules
+log
