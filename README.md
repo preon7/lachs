@@ -89,11 +89,16 @@ to control the number of icons on each line.
     - 授权可能需要翻墙（与登陆NSO相同）
 2. 运行实时更新程序时网页出现错误
     - 可在github发布issue或者加QQ群653996475寻求帮助 必要时提供log/latest_run.log运行日志
-
+3. MacOS/Linux运行报错 permission denied
+    - 需要手动添加执行权限 详情可私信或者加群指导
+    
 ## Updates / 版本更新
 
 - 0.7
     - Initial commit. Boss counting function.
+
+## Version
+Current-Version: 0.7
 
 ## License
 GPL-3.0
