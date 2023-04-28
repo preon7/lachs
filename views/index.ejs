@@ -123,50 +123,28 @@
         </script>
         <% } %>
 
-        <script>
-            // switch tab 
-
-            var select = document.getElementById('modeMenu');
-            var text_inputs = document.getElementsByClassName("target_input");
-            var check_inputs = document.getElementsByClassName("target_check");
-
-            select.addEventListener('change',function(){
-                if ( this.value == '1') {
-                    text_inputs[i].className += " hidden";
-                    check_inputs[i].className += " display";
-                    alert("selected");
-                } else if ( this.value == '2') {
-                    text_inputs[i].className = "target_input";
-                    check_inputs[i].className = "target_check";
-                } else if ( this.value == '3') {
-                    text_inputs[i].className = "target_input";
-                    check_inputs[i].className = "target_check";
-                }
-            });
-        </script>
-
         <!-- switch script -->
         <script>
-            var input = document.getElementById('toggleswitch');
-            var text_inputs = document.getElementsByClassName("target_input");
-            var check_inputs = document.getElementsByClassName("target_check");
-            var text = document.getElementById('status');
+            // var input = document.getElementById('toggleswitch');
+            // var text_inputs = document.getElementsByClassName("target_input");
+            // var check_inputs = document.getElementsByClassName("target_check");
+            // var text = document.getElementById('status');
         
-            input.addEventListener('change',function(){
-                if(this.checked) {
-                    for(var i =0, il = text_inputs.length;i<il;i++){
-                        text_inputs[i].className += " hidden";
-                        check_inputs[i].className += " display";
-                    }
-                    // text.innerHTML = text_inputs[0].className;
-                } else {
-                    for(var i =0, il = text_inputs.length;i<il;i++){
-                        text_inputs[i].className = "target_input";
-                        check_inputs[i].className = "target_check";
-                    }
-                    // text.innerHTML = text_inputs[0].className;
-                }
-            });
+            // input.addEventListener('change',function(){
+            //     if(this.checked) {
+            //         for(var i =0, il = text_inputs.length;i<il;i++){
+            //             text_inputs[i].className += " hidden";
+            //             check_inputs[i].className += " display";
+            //         }
+            //         // text.innerHTML = text_inputs[0].className;
+            //     } else {
+            //         for(var i =0, il = text_inputs.length;i<il;i++){
+            //             text_inputs[i].className = "target_input";
+            //             check_inputs[i].className = "target_check";
+            //         }
+            //         // text.innerHTML = text_inputs[0].className;
+            //     }
+            // });
 
         </script>   
     </body>
