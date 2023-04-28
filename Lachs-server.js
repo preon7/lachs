@@ -109,12 +109,21 @@ app.get("/", (req, res) => {
         } else {
             defaultValue = 0;
         }
+
+        var defaultOffsetValue;
+        if (targets.hasOwnProperty(k+'offset')) {
+            defaultOffsetValue = targets[k+'offset'];
+        } else {
+            defaultOffsetValue = 0;
+        }
+
         setArr.push({
             name: k,
             eid: k,
             url: enemyList[k].url,
             default: defaultValue,
-            default_check: ((targets[k+"check"]) ?  "checked" : "")
+            default_check: ((targets[k+"check"]) ?  "checked" : ""),
+            default_offset: defaultOffsetValue,
         });
     }
     
@@ -159,29 +168,33 @@ app.post("/", (req, res) => {
 
     // display form info
     for (var k in enemyCounts) {
-        if (k == "startTime") {continue;}
+        if (!enemyList.hasOwnProperty(k)) {continue;}
+        // if (k == "startTime") {continue;}
         // logger.debug(k.slice(-5));
         // if (k.slice(-5) == 'check') { continue; }
 
         // targets[k] = enemyCounts[k];
-        var contentString = ((total_count[k]) ?  total_count[k] : 0);
+        var count_display = ((total_count[k]) ?  total_count[k] : 0);
 
-        if (enemyCounts.only_count) {
+        if (enemyCounts['mode'] == 1) {
             if (!enemyCounts[k + 'check']) { continue; }
             
-        } else {
+        } else if (enemyCounts['mode'] == 2) {
             if (Number(enemyCounts[k]) <= 0) { continue; }
-            contentString = contentString + '/' + enemyCounts[k];
+            count_display = count_display + '/' + enemyCounts[k];
+        } else if (enemyCounts['mode'] == 3) {
+            if (Number(enemyCounts[k+'offset']) <= 0) { continue; }
+            count_display = Number(count_display) + Number(enemyCounts[k+'offset']);
         }
         
-        if (enemyList.hasOwnProperty(k)) {
+        // if (enemyList.hasOwnProperty(k)) {
             // logger.debug(enemyCounts[k]);
-            dataArr.push({
-                eid: k,
-                content: contentString,
-                url: enemyList[k].url
-            });
-        }
+        dataArr.push({
+            eid: k,
+            content: count_display,
+            url: enemyList[k].url
+        });
+        // }
     }
 
     // save form input this time

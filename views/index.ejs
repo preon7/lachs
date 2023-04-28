@@ -4,6 +4,35 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
+        <script>
+            function setTab() {
+                option = document.getElementById("modeMenu").value;
+                text_inputs = document.getElementsByClassName("target_input");
+                offset_inputs = document.getElementsByClassName("offset_input");
+                check_inputs = document.getElementsByClassName("target_check");
+
+                if ( option == '1') {
+                    for(var i =0, il = text_inputs.length;i<il;i++){
+                        text_inputs[i].className = "target_input hidden";
+                        offset_inputs[i].className = "offset_input hidden";
+                        check_inputs[i].className = "target_check display";
+                    }
+                } else if ( option == '2') {
+                    for(var i =0, il = text_inputs.length;i<il;i++){
+                        text_inputs[i].className = "target_input display";
+                        offset_inputs[i].className = "offset_input hidden";
+                        check_inputs[i].className = "target_check hidden";
+                    }
+                } else if ( option == '3') {
+                    for(var i =0, il = text_inputs.length;i<il;i++){
+                        text_inputs[i].className = "target_input hidden";
+                        offset_inputs[i].className = "offset_input display";
+                        check_inputs[i].className = "target_check hidden";
+                    }
+                }
+            }
+        </script>
+
         <!-- set count number -->
         <% if (!refresh) { %>
         <div class="setting_form">
@@ -18,15 +47,23 @@
                 </div>
                 <div class="enemy_block" style="position: absolute; margin-left: 15;">
                     <!-- target switch -->
-                    <label for="toggleswitch" id="status" >
-                        Count Only
+                    <label for="modeMenu" id="status" >
+                        Display Mode
                     </label>
                     <br>
                     <br>
-                    <label class="switch">
+                    <!-- <label class="switch">
                         <input name="only_count" type="checkbox" id="toggleswitch" checked>
                         <span class="slider"></span>
-                    </label>
+                    </label> -->
+                    <div class="select">
+                        <select id="modeMenu" name="mode" onchange="setTab()">
+                          <option value="1" selected="selected">simple</option>
+                          <option value="2">target</option>
+                          <option value="3">all</option>
+                        </select>
+                        <span class="focus"></span>
+                    </div>
                 </div>
                 <br>
                 <% setArr.forEach(element => { %>
@@ -35,6 +72,7 @@
                         <span class="enemy_icon"><img src=<%= element.url %> width="40" height="40"></span>
                     </label>
                     <input class="target_input hidden" type="text" size="4" id=<%= element.eid %> placeholder="0" name=<%= element.name %> value="<%= element.default %>" >
+                    <input class="offset_input hidden" type="text" size="4" id=<%= element.eid %> placeholder="0" name=<%= element.name + "offset" %> value="<%= element.default_offset %>" >
                     <!-- <input class="target_check" type="checkbox" name=<%= element.eid + "check" %>> -->
                     <div class="target_check display">
                         <input class="enemy_check" id=<%= element.eid + "check" %> type="checkbox" name=<%= element.eid + "check" %> <%= element.default_check %> />
@@ -75,6 +113,7 @@
         </div>
         <% }) %>
         </div>
+        
 
         <% if (refresh) { %>
         <script>
@@ -83,6 +122,28 @@
                 }, 5 * 1000); 
         </script>
         <% } %>
+
+        <script>
+            // switch tab 
+
+            var select = document.getElementById('modeMenu');
+            var text_inputs = document.getElementsByClassName("target_input");
+            var check_inputs = document.getElementsByClassName("target_check");
+
+            select.addEventListener('change',function(){
+                if ( this.value == '1') {
+                    text_inputs[i].className += " hidden";
+                    check_inputs[i].className += " display";
+                    alert("selected");
+                } else if ( this.value == '2') {
+                    text_inputs[i].className = "target_input";
+                    check_inputs[i].className = "target_check";
+                } else if ( this.value == '3') {
+                    text_inputs[i].className = "target_input";
+                    check_inputs[i].className = "target_check";
+                }
+            });
+        </script>
 
         <!-- switch script -->
         <script>
@@ -106,6 +167,7 @@
                     // text.innerHTML = text_inputs[0].className;
                 }
             });
+
         </script>   
     </body>
 </html>
