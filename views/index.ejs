@@ -36,19 +36,19 @@
         <!-- set count number -->
         <% if (!refresh) { %>
         <div class="setting_form">
-            <h2> Target Setting </h2>
+            <h2> <%= webText['Target Setting'] %> </h2>
             <form action="/" method="post">
                 <div class="enemy_block">
                     <!-- time setting -->
                     <label for="startTime">
-                        Count Start From:
+                        <%= webText['Count Start From'] %>:
                     </label><br>
                     <input class="date_input" type="datetime-local" id="startTime" name="startTime" value="<%= defaultDate %>">
                 </div>
                 <div class="enemy_block" style="position: absolute; margin-left: 15;">
                     <!-- target switch -->
                     <label for="modeMenu" id="status" >
-                        Display Mode
+                        <%= webText['Display Mode'] %>
                     </label>
                     <br>
                     <br>
@@ -58,9 +58,9 @@
                     </label> -->
                     <div class="select">
                         <select id="modeMenu" name="mode" onchange="setTab()">
-                          <option value="1" selected="selected">simple</option>
-                          <option value="2">target</option>
-                          <option value="3">all</option>
+                          <option value="1" selected="selected"><%= webText['simple'] %></option>
+                          <option value="2"><%= webText['target'] %></option>
+                          <option value="3"><%= webText['all'] %></option>
                         </select>
                         <span class="focus"></span>
                     </div>
@@ -85,7 +85,7 @@
                 </div>
                 <% }) %>
                 <button type="submit" name="submit">
-                    START
+                    <%= webText['start'] %>
                 </button>
             </form>
             

@@ -15,10 +15,16 @@ const app = express()
 app.set('view engine', 'ejs')
 
 var fs = require('fs');
+var url = require('url');
 
 // load enemies
 var file_content = fs.readFileSync('resources/enemy_data.json');
 const enemyList = JSON.parse(file_content);
+
+// load languages
+// var file_content = fs.readFileSync('languages/cn.json');
+// const webText = JSON.parse(file_content);
+languages = {}
 
 app.use(express.static(__dirname + '/resources'));
 app.use(bodyParser.json());
@@ -27,6 +33,17 @@ app.use(bodyParser.urlencoded({
 }))
 
 const logger = require("./logger");
+
+function loadLanguages() {
+    var files = fs.readdirSync('languages/');
+    for(let i = 0; i < files.length; i ++) {
+        var filename = files[i];
+        if (filename.slice(-5) == '.json') {
+            var file_content = fs.readFileSync('languages/' + filename);
+            languages[filename.substring(0,2)] = JSON.parse(file_content);
+        }
+    }
+}
 
 function fetchResult(startDate) {
     var files = fs.readdirSync('saved_results/');
@@ -95,12 +112,28 @@ function loadTargets() {
     }
 }
 
-app.get("/", (req, res) => {
+function renderIndex(req, res) {
+    loadLanguages();
+
+    lang = 'cn';
+    try {
+        var code = req.params.locale;
+        if(code !== '' && languages.hasOwnProperty(code)) {
+            lang = code;
+        } else {
+            lang = 'en';
+        }
+    } catch (error) {
+        lang = 'cn';
+    }
+
+    var webText = languages[lang];
+
     var dataArr = [];
     var setArr = [];
 
     loadTargets();
-
+    
     // add enemy count setting form
     for (var k in enemyList) {
         var defaultValue;
@@ -134,6 +167,8 @@ app.get("/", (req, res) => {
     }
 
     lastDate = defaultDate;
+
+    // logger.info(JSON.stringify(languages))
     
     res.render("index", {
         defaultDate: defaultDate,
@@ -141,9 +176,13 @@ app.get("/", (req, res) => {
         // grade: currentGrade,
         dataArr: dataArr,
         setArr: setArr,
-        refresh: false
+        refresh: false,
+        webText: webText
     })
-})
+}
+
+app.get("/", renderIndex)
+app.get("/:locale", renderIndex)
     
 app.post("/", (req, res) => {
     var enemyCounts = req.body;
@@ -212,7 +251,8 @@ app.post("/", (req, res) => {
         setArr: setArr,
         // level: currentDangerLevel,
         // grade: currentGrade,
-        refresh: true
+        refresh: true,
+        webText: languages['cn']
     })
 })
   
