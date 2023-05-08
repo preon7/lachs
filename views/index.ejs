@@ -84,6 +84,49 @@
                     </div>
                 </div>
                 <% }) %>
+
+                <hr/>
+                <br>
+                
+                <div class="options_div">
+                    <div class="switch_options">
+                        <label for="roundSwitch" id="status" >
+                            <%= webText['Show Counted Rounds'] %>
+                        </label>
+                        <br>
+                        <br>
+                        <label class="switch">
+                            <input id="roundSwitch" name="roundSwitch" type="checkbox" <%= optionsDefault['displayRoundDefault'] %>>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="switch_options">
+                        <label for="lastSwitch" id="status" >
+                            <%= webText['Show Last Round'] %>
+                        </label>
+                        <br>
+                        <br>
+                        <label class="switch">
+                            <input id="lastSwitch" name="lastSwitch" type="checkbox" <%= optionsDefault['displayLastDefault'] %>>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="switch_options">
+                        <label for="rankSwitch" id="status" >
+                            <%= webText['Show Rank/Hazard'] %>
+                        </label>
+                        <br>
+                        <br>
+                        <label class="switch">
+                            <input id="rankSwitch" name="rankSwitch" type="checkbox" <%= optionsDefault['displayRankDefault'] %>>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <br>
+                <br>
+
                 <button type="submit" name="submit">
                     <%= webText['start'] %>
                 </button>
@@ -95,9 +138,21 @@
         <!-- display current danger level -->
         <% if (refresh) { %>
         <div class="level">
-            <!-- <span> grade -  level % </span> -->
+            <div class="display_container"></div>
+                <div class="display_div" id="rank">
+                    <span class=<%= displayOptions['displayRank'] %> id="rank"> 
+                        <%= webText['Level'] %>: <%= displayInfo['grade'] %> - <%= displayInfo['level'] %> % 
+                    </span>
+                </div>
+                <div class="display_div" >
+                    <span class=<%= displayOptions['displayRound'] %> id="round"> 
+                        <%= webText['Total Count'] %>: <%= displayInfo['totalRounds'] %>
+                    </span>
+                </div>
+            </div>
         </div>
         <% } %>
+        
         
         <!-- display current count -->
         <div class="display_container"></div>
@@ -125,26 +180,32 @@
 
         <!-- switch script -->
         <script>
-            // var input = document.getElementById('toggleswitch');
-            // var text_inputs = document.getElementsByClassName("target_input");
-            // var check_inputs = document.getElementsByClassName("target_check");
-            // var text = document.getElementById('status');
+            function roundCheck() {
+                roundSwitch = document.getElementById("roundSwitch");
+                roundDisplay = document.getElementById("round");
+                if(roundSwitch.checked) {
+                    alert(roundDisplay.className);
+                    roundDisplay.className = "display";
+                    alert(roundDisplay.className);
+                } else {
+                    alert(roundDisplay.className);
+                    roundDisplay.className = "hidden";
+                    alert(roundDisplay.className);
+                }
+            };
+            
+            var rankSwitch = document.getElementById('rankSwitch');
+            var rankDisplay = document.getElementById("rank");
         
-            // input.addEventListener('change',function(){
-            //     if(this.checked) {
-            //         for(var i =0, il = text_inputs.length;i<il;i++){
-            //             text_inputs[i].className += " hidden";
-            //             check_inputs[i].className += " display";
-            //         }
-            //         // text.innerHTML = text_inputs[0].className;
-            //     } else {
-            //         for(var i =0, il = text_inputs.length;i<il;i++){
-            //             text_inputs[i].className = "target_input";
-            //             check_inputs[i].className = "target_check";
-            //         }
-            //         // text.innerHTML = text_inputs[0].className;
-            //     }
-            // });
+            
+
+            rankSwitch.addEventListener('change',function(){
+                if(this.checked) {
+                    rankDisplay.className = "display_div"
+                } else {
+                    rankDisplay.className = "hidden"
+                }
+            });
 
         </script>   
     </body>

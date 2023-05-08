@@ -1,4 +1,26 @@
 @import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
+/* split line  */
+hr {
+  width: 90%;
+  height: 2px;
+  background-color: black;
+  border: 0 none;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.options_div {
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+}
+
+.switch_options {
+  display: inline-block;
+  width: 30%;
+  text-align: center;
+}
+
 /* main display panel */
 .display_div {
    color: white;
@@ -231,6 +253,9 @@ input.enemy_check:checked + label svg path {
   transition: all 350ms cubic-bezier(1, 0, 0.37, 0.91);
 }
 
+.display_div span.hidden {
+  display: none;
+}
 
 .setting_form input.hidden {
   display: none;

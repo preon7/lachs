@@ -1,6 +1,7 @@
 // @author Furen https://github.com/preon7
 var data = {}
 var total_count = {};
+var last_count = {};
 var file_content;
 var targets;
 var targetDate;
@@ -8,6 +9,7 @@ var defaultDate;
 var lastDate;
 var currentDangerLevel;
 var currentGrade;
+var totalRounds = 0;
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -60,13 +62,14 @@ function fetchResult(startDate) {
     filtered_files.sort();
 
     for (let i = 0; i < filtered_files.length; i ++) {
-        var contentStr = "";
+        // var contentStr = "";
         out_string = out_string + ' <br> ' + filtered_files[i];
         var file_content = fs.readFileSync('saved_results/' + filtered_files[i]);
         file_content = JSON.parse(file_content);
         var enemyData = file_content.result.enemyResults;
         for (var k in enemyData) {
-            contentStr = contentStr + ' ' + enemyData[k].enemy.name + ': ' + enemyData[k].defeatCount;
+        //     contentStr = contentStr + ' ' + enemyData[k].enemy.name + ': ' + enemyData[k].defeatCount;
+            last_count[enemyData[k].enemy.id] = enemyData[k].defeatCount;
         }
         
         // compare with set time
@@ -77,9 +80,16 @@ function fetchResult(startDate) {
         if ((!data.hasOwnProperty(data_key)) && (Date.parse(startDate) < workTime)) {
             data[data_key] = true;
             logger.debug("Start time: " + startDate + "; Got result at: " + file_content.result.playedTime);
+            totalRounds ++;
 
-            // currentDangerLevel = Number(file_content.result.dangerRate) * 100;
-            // currentGrade = file_content.result.afterGrade.name + " " + file_content.result.afterGradePoint;
+            try {
+                currentDangerLevel = Number(file_content.result.dangerRate) * 100;
+                currentGrade = file_content.result.afterGrade.name + " " + file_content.result.afterGradePoint;
+            } catch (error) {
+                logger.error(error.stack);
+                currentDangerLevel = "";
+                currentGrade = "";
+            }
 
             for (var k in enemyData) {
                 // add to enemy count 
@@ -120,11 +130,13 @@ function renderIndex(req, res) {
         var code = req.params.locale;
         if(code !== '' && languages.hasOwnProperty(code)) {
             lang = code;
+        } else if (!code) {
+            lang = 'cn';
         } else {
             lang = 'en';
         }
     } catch (error) {
-        lang = 'cn';
+        lang = 'en';
     }
 
     var webText = languages[lang];
@@ -168,7 +180,13 @@ function renderIndex(req, res) {
 
     lastDate = defaultDate;
 
-    // logger.info(JSON.stringify(languages))
+    // logger.info((targets['roundSwitch']) ?  "checked" : "")
+    // logger.info(JSON.stringify(targets))
+    var optionsDefault = {
+        displayRoundDefault: (targets['roundSwitch']) ?  "checked" : "",
+        displayLastDefault: (targets['lastSwitch']) ?  "checked" : "",
+        displayRankDefault: (targets['rankSwitch']) ?  "checked" : ""
+    };
     
     res.render("index", {
         defaultDate: defaultDate,
@@ -176,6 +194,7 @@ function renderIndex(req, res) {
         // grade: currentGrade,
         dataArr: dataArr,
         setArr: setArr,
+        optionsDefault: optionsDefault,
         refresh: false,
         webText: webText
     })
@@ -194,6 +213,7 @@ app.post("/", (req, res) => {
         logger.debug('count date changed from ' + lastDate + ' to ' + targetDate);
         data = {};
         total_count = {};
+        totalRounds = 0;
     }
 
     // convert to GMT
@@ -204,6 +224,20 @@ app.post("/", (req, res) => {
 
     var dataArr = [];
     var setArr = [];
+
+    // set display options
+    var displayRound = 'hidden';
+    var displayLast = 'hidden';
+    var displayRank = 'hidden';
+    if (enemyCounts['roundSwitch']) {
+        displayRound = 'display';
+    }
+    if (enemyCounts['lastSwitch']) {
+        displayLast = 'display';
+    }
+    if (enemyCounts['rankSwitch']) {
+        displayRank = 'display';
+    }
 
     // display form info
     for (var k in enemyCounts) {
@@ -225,6 +259,10 @@ app.post("/", (req, res) => {
             if (Number(enemyCounts[k+'offset']) <= 0) { continue; }
             count_display = Number(count_display) + Number(enemyCounts[k+'offset']);
         }
+
+        if (displayLast == 'display') {
+            count_display = count_display + '(' + last_count[k] + ')';
+        }
         
         // if (enemyList.hasOwnProperty(k)) {
             // logger.debug(enemyCounts[k]);
@@ -244,13 +282,23 @@ app.post("/", (req, res) => {
     });
 
     lastDate = targetDate;
+    var displayOptions = {
+        displayRound: displayRound,
+        displayLast: displayLast,
+        displayRank: displayRank,
+    };
+    var displayInfo = {
+        totalRounds: totalRounds,
+        level: currentDangerLevel,
+        grade: currentGrade,
+    };
 
     res.render("index", {
         defaultDate: defaultDate,
         dataArr: dataArr,
         setArr: setArr,
-        // level: currentDangerLevel,
-        // grade: currentGrade,
+        displayOptions: displayOptions,
+        displayInfo: displayInfo,
         refresh: true,
         webText: languages['cn']
     })
