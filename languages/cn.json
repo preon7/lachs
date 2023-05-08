@@ -5,5 +5,10 @@
 "simple": "简易",
 "target": "目标",
 "all": "总计",
+"Show Counted Rounds": "显示统计场数",
+"Show Last Round": "显示前一场计数",
+"Show Rank/Hazard": "显示段位/危险度",
+"Level": "危险度",
+"Total Count": "统计场数",
 "start": "开始" 
 }

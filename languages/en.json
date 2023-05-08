@@ -5,5 +5,10 @@
 "simple": "simple",
 "target": "target",
 "all": "all",
+"Show Counted Rounds": "Show Counted Rounds",
+"Show Last Round": "Show Last Round",
+"Show Rank/Hazard": "Show Rank/Hazard",
+"Level": "Level",
+"Total Count": "Total Count",
 "start": "START" 
 }
