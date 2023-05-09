@@ -4,29 +4,67 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
+        <script>
+            // list select panel to display 
+            function setTab() {
+                option = document.getElementById("modeMenu").value;
+                text_inputs = document.getElementsByClassName("target_input");
+                offset_inputs = document.getElementsByClassName("offset_input");
+                check_inputs = document.getElementsByClassName("target_check");
+
+                if ( option == '1') {
+                    for(var i =0, il = text_inputs.length;i<il;i++){
+                        text_inputs[i].className = "target_input hidden";
+                        offset_inputs[i].className = "offset_input hidden";
+                        check_inputs[i].className = "target_check display";
+                    }
+                } else if ( option == '2') {
+                    for(var i =0, il = text_inputs.length;i<il;i++){
+                        text_inputs[i].className = "target_input display";
+                        offset_inputs[i].className = "offset_input hidden";
+                        check_inputs[i].className = "target_check hidden";
+                    }
+                } else if ( option == '3') {
+                    for(var i =0, il = text_inputs.length;i<il;i++){
+                        text_inputs[i].className = "target_input hidden";
+                        offset_inputs[i].className = "offset_input display";
+                        check_inputs[i].className = "target_check hidden";
+                    }
+                }
+            }
+        </script>
+
         <!-- set count number -->
         <% if (!refresh) { %>
         <div class="setting_form">
-            <h2> Target Setting </h2>
+            <h2> <%= webText['Target Setting'] %> </h2>
             <form action="/" method="post">
                 <div class="enemy_block">
                     <!-- time setting -->
                     <label for="startTime">
-                        Count Start From:
+                        <%= webText['Count Start From'] %>:
                     </label><br>
                     <input class="date_input" type="datetime-local" id="startTime" name="startTime" value="<%= defaultDate %>">
                 </div>
                 <div class="enemy_block" style="position: absolute; margin-left: 15;">
                     <!-- target switch -->
-                    <label for="toggleswitch" id="status" >
-                        Count Only
+                    <label for="modeMenu" id="status" >
+                        <%= webText['Display Mode'] %>
                     </label>
                     <br>
                     <br>
-                    <label class="switch">
+                    <!-- <label class="switch">
                         <input name="only_count" type="checkbox" id="toggleswitch" checked>
                         <span class="slider"></span>
-                    </label>
+                    </label> -->
+                    <div class="select">
+                        <select id="modeMenu" name="mode" onchange="setTab()">
+                          <option value="1" selected="selected"><%= webText['simple'] %></option>
+                          <option value="2"><%= webText['target'] %></option>
+                          <option value="3"><%= webText['all'] %></option>
+                        </select>
+                        <span class="focus"></span>
+                    </div>
                 </div>
                 <br>
                 <% setArr.forEach(element => { %>
@@ -35,6 +73,7 @@
                         <span class="enemy_icon"><img src=<%= element.url %> width="40" height="40"></span>
                     </label>
                     <input class="target_input hidden" type="text" size="4" id=<%= element.eid %> placeholder="0" name=<%= element.name %> value="<%= element.default %>" >
+                    <input class="offset_input hidden" type="text" size="4" id=<%= element.eid %> placeholder="0" name=<%= element.name + "offset" %> value="<%= element.default_offset %>" >
                     <!-- <input class="target_check" type="checkbox" name=<%= element.eid + "check" %>> -->
                     <div class="target_check display">
                         <input class="enemy_check" id=<%= element.eid + "check" %> type="checkbox" name=<%= element.eid + "check" %> <%= element.default_check %> />
@@ -46,8 +85,52 @@
                     </div>
                 </div>
                 <% }) %>
+
+                <hr/>
+                <br>
+                
+                <!-- switches for displayed info  -->
+                <div class="options_div">
+                    <div class="switch_options">
+                        <label for="roundSwitch" id="status" >
+                            <%= webText['Show Counted Rounds'] %>
+                        </label>
+                        <br>
+                        <br>
+                        <label class="switch">
+                            <input id="roundSwitch" name="roundSwitch" type="checkbox" <%= optionsDefault['displayRoundDefault'] %>>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="switch_options">
+                        <label for="lastSwitch" id="status" >
+                            <%= webText['Show Last Round'] %>
+                        </label>
+                        <br>
+                        <br>
+                        <label class="switch">
+                            <input id="lastSwitch" name="lastSwitch" type="checkbox" <%= optionsDefault['displayLastDefault'] %>>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="switch_options">
+                        <label for="rankSwitch" id="status" >
+                            <%= webText['Show Rank/Hazard'] %>
+                        </label>
+                        <br>
+                        <br>
+                        <label class="switch">
+                            <input id="rankSwitch" name="rankSwitch" type="checkbox" <%= optionsDefault['displayRankDefault'] %>>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <br>
+                <br>
+
                 <button type="submit" name="submit">
-                    START
+                    <%= webText['start'] %>
                 </button>
             </form>
             
@@ -57,9 +140,21 @@
         <!-- display current danger level -->
         <% if (refresh) { %>
         <div class="level">
-            <!-- <span> grade -  level % </span> -->
+            <div class="display_container"></div>
+                <div class="display_div" id="rank">
+                    <span class=<%= displayOptions['displayRank'] %> id="rank"> 
+                        <%= webText['Level'] %>: <%= displayInfo['grade'] %> - <%= displayInfo['level'] %> % 
+                    </span>
+                </div>
+                <div class="display_div" >
+                    <span class=<%= displayOptions['displayRound'] %> id="round"> 
+                        <%= webText['Total Count'] %>: <%= displayInfo['totalRounds'] %>
+                    </span>
+                </div>
+            </div>
         </div>
         <% } %>
+        
         
         <!-- display current count -->
         <div class="display_container"></div>
@@ -75,6 +170,7 @@
         </div>
         <% }) %>
         </div>
+        
 
         <% if (refresh) { %>
         <script>
@@ -84,28 +180,35 @@
         </script>
         <% } %>
 
-        <!-- switch script -->
+        <!-- switch for front end  -->
         <script>
-            var input = document.getElementById('toggleswitch');
-            var text_inputs = document.getElementsByClassName("target_input");
-            var check_inputs = document.getElementsByClassName("target_check");
-            var text = document.getElementById('status');
+            // function roundCheck() {
+            //     roundSwitch = document.getElementById("roundSwitch");
+            //     roundDisplay = document.getElementById("round");
+            //     if(roundSwitch.checked) {
+            //         alert(roundDisplay.className);
+            //         roundDisplay.className = "display";
+            //         alert(roundDisplay.className);
+            //     } else {
+            //         alert(roundDisplay.className);
+            //         roundDisplay.className = "hidden";
+            //         alert(roundDisplay.className);
+            //     }
+            // };
+            
+            // var rankSwitch = document.getElementById('rankSwitch');
+            // var rankDisplay = document.getElementById("rank");
         
-            input.addEventListener('change',function(){
-                if(this.checked) {
-                    for(var i =0, il = text_inputs.length;i<il;i++){
-                        text_inputs[i].className += " hidden";
-                        check_inputs[i].className += " display";
-                    }
-                    // text.innerHTML = text_inputs[0].className;
-                } else {
-                    for(var i =0, il = text_inputs.length;i<il;i++){
-                        text_inputs[i].className = "target_input";
-                        check_inputs[i].className = "target_check";
-                    }
-                    // text.innerHTML = text_inputs[0].className;
-                }
-            });
+            
+
+            // rankSwitch.addEventListener('change',function(){
+            //     if(this.checked) {
+            //         rankDisplay.className = "display_div"
+            //     } else {
+            //         rankDisplay.className = "hidden"
+            //     }
+            // });
+
         </script>   
     </body>
 </html>

@@ -1,6 +1,7 @@
 // @author Furen https://github.com/preon7
 var data = {}
 var total_count = {};
+var last_count = {};
 var file_content;
 var targets;
 var targetDate;
@@ -8,6 +9,7 @@ var defaultDate;
 var lastDate;
 var currentDangerLevel;
 var currentGrade;
+var totalRounds = 0;
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -15,10 +17,16 @@ const app = express()
 app.set('view engine', 'ejs')
 
 var fs = require('fs');
+var url = require('url');
 
 // load enemies
 var file_content = fs.readFileSync('resources/enemy_data.json');
 const enemyList = JSON.parse(file_content);
+
+// load languages
+// var file_content = fs.readFileSync('languages/cn.json');
+// const webText = JSON.parse(file_content);
+languages = {}
 
 app.use(express.static(__dirname + '/resources'));
 app.use(bodyParser.json());
@@ -27,6 +35,17 @@ app.use(bodyParser.urlencoded({
 }))
 
 const logger = require("./logger");
+
+function loadLanguages() {
+    var files = fs.readdirSync('languages/');
+    for(let i = 0; i < files.length; i ++) {
+        var filename = files[i];
+        if (filename.slice(-5) == '.json') {
+            var file_content = fs.readFileSync('languages/' + filename);
+            languages[filename.substring(0,2)] = JSON.parse(file_content);
+        }
+    }
+}
 
 function fetchResult(startDate) {
     var files = fs.readdirSync('saved_results/');
@@ -43,13 +62,14 @@ function fetchResult(startDate) {
     filtered_files.sort();
 
     for (let i = 0; i < filtered_files.length; i ++) {
-        var contentStr = "";
+        // var contentStr = "";
         out_string = out_string + ' <br> ' + filtered_files[i];
         var file_content = fs.readFileSync('saved_results/' + filtered_files[i]);
         file_content = JSON.parse(file_content);
         var enemyData = file_content.result.enemyResults;
         for (var k in enemyData) {
-            contentStr = contentStr + ' ' + enemyData[k].enemy.name + ': ' + enemyData[k].defeatCount;
+        //     contentStr = contentStr + ' ' + enemyData[k].enemy.name + ': ' + enemyData[k].defeatCount;
+            last_count[enemyData[k].enemy.id] = enemyData[k].defeatCount;
         }
         
         // compare with set time
@@ -60,9 +80,16 @@ function fetchResult(startDate) {
         if ((!data.hasOwnProperty(data_key)) && (Date.parse(startDate) < workTime)) {
             data[data_key] = true;
             logger.debug("Start time: " + startDate + "; Got result at: " + file_content.result.playedTime);
+            totalRounds ++;
 
-            // currentDangerLevel = Number(file_content.result.dangerRate) * 100;
-            // currentGrade = file_content.result.afterGrade.name + " " + file_content.result.afterGradePoint;
+            try {
+                currentDangerLevel = Number(file_content.result.dangerRate) * 100;
+                currentGrade = file_content.result.afterGrade.name + " " + file_content.result.afterGradePoint;
+            } catch (error) {
+                logger.error(error.stack);
+                currentDangerLevel = "";
+                currentGrade = "";
+            }
 
             for (var k in enemyData) {
                 // add to enemy count 
@@ -95,12 +122,30 @@ function loadTargets() {
     }
 }
 
-app.get("/", (req, res) => {
+function renderIndex(req, res) {
+    loadLanguages();
+
+    lang = 'cn';
+    try {
+        var code = req.params.locale;
+        if(code !== '' && languages.hasOwnProperty(code)) {
+            lang = code;
+        } else if (!code) {
+            lang = 'cn';
+        } else {
+            lang = 'en';
+        }
+    } catch (error) {
+        lang = 'en';
+    }
+
+    var webText = languages[lang];
+
     var dataArr = [];
     var setArr = [];
 
     loadTargets();
-
+    
     // add enemy count setting form
     for (var k in enemyList) {
         var defaultValue;
@@ -109,12 +154,21 @@ app.get("/", (req, res) => {
         } else {
             defaultValue = 0;
         }
+
+        var defaultOffsetValue;
+        if (targets.hasOwnProperty(k+'offset')) {
+            defaultOffsetValue = targets[k+'offset'];
+        } else {
+            defaultOffsetValue = 0;
+        }
+
         setArr.push({
             name: k,
             eid: k,
             url: enemyList[k].url,
             default: defaultValue,
-            default_check: ((targets[k+"check"]) ?  "checked" : "")
+            default_check: ((targets[k+"check"]) ?  "checked" : ""),
+            default_offset: defaultOffsetValue,
         });
     }
     
@@ -125,6 +179,14 @@ app.get("/", (req, res) => {
     }
 
     lastDate = defaultDate;
+
+    // logger.info((targets['roundSwitch']) ?  "checked" : "")
+    // logger.info(JSON.stringify(targets))
+    var optionsDefault = {
+        displayRoundDefault: (targets['roundSwitch']) ?  "checked" : "",
+        displayLastDefault: (targets['lastSwitch']) ?  "checked" : "",
+        displayRankDefault: (targets['rankSwitch']) ?  "checked" : ""
+    };
     
     res.render("index", {
         defaultDate: defaultDate,
@@ -132,9 +194,14 @@ app.get("/", (req, res) => {
         // grade: currentGrade,
         dataArr: dataArr,
         setArr: setArr,
-        refresh: false
+        optionsDefault: optionsDefault,
+        refresh: false,
+        webText: webText
     })
-})
+}
+
+app.get("/", renderIndex)
+app.get("/:locale", renderIndex)
     
 app.post("/", (req, res) => {
     var enemyCounts = req.body;
@@ -146,6 +213,7 @@ app.post("/", (req, res) => {
         logger.debug('count date changed from ' + lastDate + ' to ' + targetDate);
         data = {};
         total_count = {};
+        totalRounds = 0;
     }
 
     // convert to GMT
@@ -157,31 +225,53 @@ app.post("/", (req, res) => {
     var dataArr = [];
     var setArr = [];
 
+    // set display options
+    var displayRound = 'hidden';
+    var displayLast = 'hidden';
+    var displayRank = 'hidden';
+    if (enemyCounts['roundSwitch']) {
+        displayRound = 'display';
+    }
+    if (enemyCounts['lastSwitch']) {
+        displayLast = 'display';
+    }
+    if (enemyCounts['rankSwitch']) {
+        displayRank = 'display';
+    }
+
     // display form info
     for (var k in enemyCounts) {
-        if (k == "startTime") {continue;}
+        if (!enemyList.hasOwnProperty(k)) {continue;}
+        // if (k == "startTime") {continue;}
         // logger.debug(k.slice(-5));
         // if (k.slice(-5) == 'check') { continue; }
 
         // targets[k] = enemyCounts[k];
-        var contentString = ((total_count[k]) ?  total_count[k] : 0);
+        var count_display = ((total_count[k]) ?  total_count[k] : 0);
 
-        if (enemyCounts.only_count) {
+        if (enemyCounts['mode'] == 1) {
             if (!enemyCounts[k + 'check']) { continue; }
             
-        } else {
+        } else if (enemyCounts['mode'] == 2) {
             if (Number(enemyCounts[k]) <= 0) { continue; }
-            contentString = contentString + '/' + enemyCounts[k];
+            count_display = count_display + '/' + enemyCounts[k];
+        } else if (enemyCounts['mode'] == 3) {
+            if (Number(enemyCounts[k+'offset']) <= 0) { continue; }
+            count_display = Number(count_display) + Number(enemyCounts[k+'offset']);
+        }
+
+        if (displayLast == 'display') {
+            count_display = count_display + '(' + last_count[k] + ')';
         }
         
-        if (enemyList.hasOwnProperty(k)) {
+        // if (enemyList.hasOwnProperty(k)) {
             // logger.debug(enemyCounts[k]);
-            dataArr.push({
-                eid: k,
-                content: contentString,
-                url: enemyList[k].url
-            });
-        }
+        dataArr.push({
+            eid: k,
+            content: count_display,
+            url: enemyList[k].url
+        });
+        // }
     }
 
     // save form input this time
@@ -192,14 +282,25 @@ app.post("/", (req, res) => {
     });
 
     lastDate = targetDate;
+    var displayOptions = {
+        displayRound: displayRound,
+        displayLast: displayLast,
+        displayRank: displayRank,
+    };
+    var displayInfo = {
+        totalRounds: totalRounds,
+        level: currentDangerLevel,
+        grade: currentGrade,
+    };
 
     res.render("index", {
         defaultDate: defaultDate,
         dataArr: dataArr,
         setArr: setArr,
-        // level: currentDangerLevel,
-        // grade: currentGrade,
-        refresh: true
+        displayOptions: displayOptions,
+        displayInfo: displayInfo,
+        refresh: true,
+        webText: languages['cn']
     })
 })
   

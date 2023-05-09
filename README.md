@@ -1,12 +1,23 @@
 Lachs - Live Assistant for Counting Heads in Splatoon3
 ===
-## Important notice / 重要通知❗
-### 2023.04.21
-- A bug in nxapi uses an outdated app version causing authorization to fail. ~~Execute tools/patch_nxapi to patch the local file until nxapi is updated.~~ The patch file will be copied when running the installation script.
 
-    数据获取程序nxapi现版本的bug导致无法进行用户授权 ~~请使用tools文件夹里的patch_nxapi进行本地修复，并等待nxapi更新~~ 补丁文件会在运行install.bat时自动替换
+## Updates / 版本更新
 
+- 0.8:
+    - Change the setting panel with a select list. Function to add the previous count. 
 
+        通过列表选择显示方式 可选择显示历史总击杀数（需手动输入未统计部分）
+    - Add display options to filter information on the screen.
+
+        添加选项控制显示的信息（危险度，统计场数，上一场击杀数）
+    - Add multi-language support.
+    
+        添加多语言支持
+
+- 0.7:
+    - Initial commit. Boss counting function.
+
+        初始功能 boss击杀计数
 
 ## Introduction / 简介
 Local web server for displaying and updating salmonid boss count in Salmon Run of Splatoon 3.
@@ -22,6 +33,39 @@ Use Node.js as the local backend and [nxapi](https://github.com/samuelthomas2774
 可在[OBS](https://obsproject.com/)中添加浏览器源实现直播间统计数据显示
 
 ## Usage / 使用方法
+Setting page:
+Use date and time selector to set the start time. The program will count every battle later than the start time.
+
+There are three display modes:
+- Simple: Display the kill count of the selected boss only.
+- Target: Display a target number along with the kill count. Only display bosses with non-zero targets.
+- All: Display the kill count after adding the custom offset. This function can be used when counting all-time killings, where the input offset is the previous kill count.
+
+❗**Use arrow key to switch between display mods in OBS**
+
+There are three display options:
+- Show Counted Rounds: display the number of counted rounds.
+- Show Last Round: display the last round kill count in parenthesis.
+- Show Rank/Hazard: display last round difficulty.
+
+After setting the display, click start to display the live count page. The page will refresh every 10 seconds to update the result.
+
+设置界面：
+通过日期时间选项设置计数起始时间点，程序会统计在此时间点之后的所有已下载记录
+
+显示模式：
+- 简易：只显示统计出的选定boss击杀数量
+- 目标：在统计的boss数量后面显示目标数量
+- 总计：显示当前统计数量加上程序未统计的数量（需手动输入未统计部分）
+
+❗**在OBS中通过方向键切换选项**
+
+显示选项：
+- 显示统计场数：在屏幕上显示本次统计的总场数
+- 显示前一场计数：在统计的boss数量后面括号内显示上一场的击杀数量
+- 显示段位/危险度：在屏幕上显示上一场的危险度信息
+
+## Installation / 安装方法
 1. Install Node.js (installer can be found on [official website](https://nodejs.org/en).
 We recommend using the default install location.)
 2. In Lachs folder:
@@ -91,14 +135,15 @@ to control the number of icons on each line.
     - 可在github发布issue或者加QQ群653996475寻求帮助 必要时提供log/latest_run.log运行日志
 3. MacOS/Linux运行报错 permission denied
     - 需要手动添加执行权限 详情可私信或者加群指导
-    
-## Updates / 版本更新
 
-- 0.7
-    - Initial commit. Boss counting function.
+## Important notice / 重要通知
+### 2023.04.21
+- A bug in nxapi uses an outdated app version causing authorization to fail. ~~Execute tools/patch_nxapi to patch the local file until nxapi is updated.~~ The patch file will be copied when running the installation script.
+
+    数据获取程序nxapi现版本的bug导致无法进行用户授权 ~~请使用tools文件夹里的patch_nxapi进行本地修复，并等待nxapi更新~~ 补丁文件会在运行install.bat时自动替换
 
 ## Version
-Current-Version: 0.7
+Current-Version: 0.8
 
 ## License
 GPL-3.0
