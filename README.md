@@ -3,7 +3,7 @@ Lachs - Live Assistant for Counting Heads in Splatoon3
 
 ## Updates / 版本更新
 
-- 0.8
+- 0.8:
     - Change the setting panel with a select list. Function to add the previous count. 
 
         通过列表选择显示方式 可选择显示历史总击杀数（需手动输入未统计部分）
@@ -14,7 +14,7 @@ Lachs - Live Assistant for Counting Heads in Splatoon3
     
         添加多语言支持
 
-- 0.7
+- 0.7:
     - Initial commit. Boss counting function.
 
         初始功能 boss击杀计数
@@ -41,6 +41,8 @@ There are three display modes:
 - Target: Display a target number along with the kill count. Only display bosses with non-zero targets.
 - All: Display the kill count after adding the custom offset. This function can be used when counting all-time killings, where the input offset is the previous kill count.
 
+❗**Use arrow key to switch between display mods in OBS**
+
 There are three display options:
 - Show Counted Rounds: display the number of counted rounds.
 - Show Last Round: display the last round kill count in parenthesis.
@@ -55,6 +57,8 @@ After setting the display, click start to display the live count page. The page 
 - 简易：只显示统计出的选定boss击杀数量
 - 目标：在统计的boss数量后面显示目标数量
 - 总计：显示当前统计数量加上程序未统计的数量（需手动输入未统计部分）
+
+❗**在OBS中通过方向键切换选项**
 
 显示选项：
 - 显示统计场数：在屏幕上显示本次统计的总场数
