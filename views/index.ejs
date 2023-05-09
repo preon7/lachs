@@ -5,6 +5,7 @@
     </head>
     <body>
         <script>
+            // list select panel to display 
             function setTab() {
                 option = document.getElementById("modeMenu").value;
                 text_inputs = document.getElementsByClassName("target_input");
@@ -88,6 +89,7 @@
                 <hr/>
                 <br>
                 
+                <!-- switches for displayed info  -->
                 <div class="options_div">
                     <div class="switch_options">
                         <label for="roundSwitch" id="status" >
@@ -178,34 +180,34 @@
         </script>
         <% } %>
 
-        <!-- switch script -->
+        <!-- switch for front end  -->
         <script>
-            function roundCheck() {
-                roundSwitch = document.getElementById("roundSwitch");
-                roundDisplay = document.getElementById("round");
-                if(roundSwitch.checked) {
-                    alert(roundDisplay.className);
-                    roundDisplay.className = "display";
-                    alert(roundDisplay.className);
-                } else {
-                    alert(roundDisplay.className);
-                    roundDisplay.className = "hidden";
-                    alert(roundDisplay.className);
-                }
-            };
+            // function roundCheck() {
+            //     roundSwitch = document.getElementById("roundSwitch");
+            //     roundDisplay = document.getElementById("round");
+            //     if(roundSwitch.checked) {
+            //         alert(roundDisplay.className);
+            //         roundDisplay.className = "display";
+            //         alert(roundDisplay.className);
+            //     } else {
+            //         alert(roundDisplay.className);
+            //         roundDisplay.className = "hidden";
+            //         alert(roundDisplay.className);
+            //     }
+            // };
             
-            var rankSwitch = document.getElementById('rankSwitch');
-            var rankDisplay = document.getElementById("rank");
+            // var rankSwitch = document.getElementById('rankSwitch');
+            // var rankDisplay = document.getElementById("rank");
         
             
 
-            rankSwitch.addEventListener('change',function(){
-                if(this.checked) {
-                    rankDisplay.className = "display_div"
-                } else {
-                    rankDisplay.className = "hidden"
-                }
-            });
+            // rankSwitch.addEventListener('change',function(){
+            //     if(this.checked) {
+            //         rankDisplay.className = "display_div"
+            //     } else {
+            //         rankDisplay.className = "hidden"
+            //     }
+            // });
 
         </script>   
     </body>
