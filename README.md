@@ -14,6 +14,10 @@ Lachs - Live Assistant for Counting Heads in Splatoon3
     
         添加多语言支持
 
+    - Add update checker.
+
+        启动时检查更新
+
 - 0.7:
     - Initial commit. Boss counting function.
 

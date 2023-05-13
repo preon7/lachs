@@ -1,3 +1,8 @@
 @echo off
-start "" call "start_monitor.bat"
-start "" call "start_server.bat"
+
+call node check_update.js
+
+start /b "" call "start_monitor.bat"
+start /b "" call "start_server.bat"
+
+cmd /k
